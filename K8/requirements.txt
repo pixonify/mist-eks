@@ -1,0 +1,7 @@
+flask
+kubernetes
+pyyaml
+opencv-contrib-python
+bottle
+tqdm
+pymongo

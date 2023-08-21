@@ -1,0 +1,34 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: mist
+  region: <REGION>
+nodeGroups:
+  - name: mist-control-group
+    minSize: 1
+    maxSize: 1
+    tags:
+      k8s.io/cluster-autoscaler/mist: "owned"
+      k8s.io/cluster-autoscaler/enabled: "true"
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+    labels: { role: workers }
+    instanceType: t4g.small # https://instances.vantage.sh/aws/ec2/t4g.small
+    desiredCapacity: 1
+  - name: mist-burst-group
+    minSize: 0
+    maxSize: 1
+    tags:
+      k8s.io/cluster-autoscaler/mist: "owned"
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/node-template/label/instance-type: "gpu"
+      k8s.io/cluster-autoscaler/node-template/label/nvidia.com/gpu: "true"
+      k8s.io/cluster-autoscaler/node-template/resources/nvidia.com/gpu: "1" # Amount of GPU on each instance
+      k8s.amazonaws.com/accelerator: "nvidia-tesla-t4"
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+    labels: { role: workers }
+    instanceType: g4dn.2xlarge # https://instances.vantage.sh/aws/ec2/g4ad.2xlarge
+    desiredCapacity: 0
