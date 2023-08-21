@@ -41,25 +41,31 @@ In our case, we will use it to install the [AWS loadbalancer controller addon](h
 Create and then login to your [Amazon Elastic Container Registry](https://aws.amazon.com/ecr/).
 
 ```
-aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ERC NAME>
+aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ECR NAME>
 ```
+
+**Note:** Below we will refer to the ECR connection URL as "\<ECR REPO\>".
 
 Tag and push the burst pool image which will be started at runtime. More instructions to follow on what image to use.
+For now, we are testing whether the [documented cloud image](https://mist-documentation.readthedocs.io/en/latest/content/cloud.html) may be used as is or will need to be modified.
 
 ```
-docker tag <MIST RUNTIME IMAGE>:<MIST RUNTIME TAG> <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ECR NAME>:<AWS RUNTIME IMAGE>
-docker push <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ECR NAME>:<AWS RUNTIME IMAGE>
+docker tag public.ecr.aws/f9c5c8j0/mist-with-model:latest <ECR REPO>:<AWS BURST IMAGE>
+docker push <ECR REPO>:<AWS BURST IMAGE>
 ```
 
-Next build and push the control image.
+Next build, tag, and push the control image.
 
-**Important:** Ensure you open the `app.js` file and replace "\<MIST RUNTIME IMAGE\>" with the path and tag of where you pushed the burst pool image.
+**Important:** Before building, ensure you open the `app.js` file and replace "\<MIST RUNTIME IMAGE\>" with the ECR image and tag of where you pushed the burst pool image from above.
 
 ```
-docker build -t <LOCAL CONTROL IMAGE>:<LOCAL CONTROL TAG> .
-docker tag <CONTROL IMAGE>:<CONTROL TAG> <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ERC NAME>:<AWS CONTROL IMAGE>
-docker push <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ERC NAME>:<AWS CONTROL IMAGE>
+docker build -t <CONTROL IMAGE>:<CONTROL TAG> .
+docker tag <CONTROL IMAGE>:<CONTROL TAG> <ECR REPO>:<AWS CONTROL IMAGE>
+docker push <ECR REPO>:<AWS CONTROL IMAGE>
 ```
+
+#### Resources
+* [Pushing a Docker Image to ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html)
 
 ### Create the Kubernetes cluster
 
