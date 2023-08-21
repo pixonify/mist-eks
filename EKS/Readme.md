@@ -1,4 +1,4 @@
-# Deployming onto Amazon Elastic Kubernetes Service (Amazon EKS)
+# Deploying onto Amazon Elastic Kubernetes Service (Amazon EKS)
 
 Below is described steps for deployment of Mist onto [Amazon Elastic Kubernetes Service](https://aws.amazon.com/pm/eks/).
 Although the steps are unique to EKS, the Kubernetes files may be applied to other platforms, such as Google Kubernetes Engine (GKE).
