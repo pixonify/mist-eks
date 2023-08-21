@@ -53,7 +53,7 @@ docker push <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ECR NAME>:<AWS RUNT
 
 Next build and push the control image.
 
-**Important:** Ensure you open the `app.js` file and replace "<MIST RUNTIME IMAGE>" with the path and tag of where you pushed the burst pool image.
+**Important:** Ensure you open the `app.js` file and replace "\<MIST RUNTIME IMAGE\>" with the path and tag of where you pushed the burst pool image.
 
 ```
 docker build -t <LOCAL CONTROL IMAGE>:<LOCAL CONTROL TAG> .
@@ -63,7 +63,7 @@ docker push <AWS ACCOUNT ID>.dkr.ecr.<REGION>.amazonaws.com/<ERC NAME>:<AWS CONT
 
 ### Create the Kubernetes cluster
 
-The `cluster.yaml` file contains the cluster definition. **Note:** Update the "<REGION>" before running the create command.
+The `cluster.yaml` file contains the cluster definition. **Note:** Update the "\<REGION\>" before running the create command.
 
 ```
 eksctl create cluster -f cluster.yaml
@@ -108,7 +108,7 @@ The command below will print information you may pull the VPC from.
 aws eks describe-cluster --name mist
 ```
 
-Finally, install the loadbalancer via Helm. **Note:** Make sure to replace the "<REGION>" and "<VPC ID>" before running the command.
+Finally, install the loadbalancer via Helm. **Note:** Make sure to replace the "\<REGION\>" and "\<VPC ID\>" before running the command.
 
 ```
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller --set clusterName=mist --set serviceAccount.create=false --set region=<REGION> --set vpcId=<VPC ID> --set serviceAccount.name=aws-load-balancer-controller -n kube-system
@@ -137,7 +137,7 @@ kubectl apply -f rolebinding.yaml
 
 It's now time to deploy the control container. Use the below command to deploy the control pod, service, and ingress necessary to support the main server.
 
-**Note:** Replace the "<IMAGE>" in the `deployment.yaml` file to point to the location of the ECR location you pushed the control image to.
+**Note:** Replace the "\<IMAGE\>" in the `deployment.yaml` file to point to the location of the ECR location you pushed the control image to.
 The service name, "job-robot", must match the service defined in the `role.yaml` and `rolebinding.yaml` files.
 
 ```
